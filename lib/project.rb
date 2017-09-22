@@ -19,7 +19,7 @@ class Project
     projects_out.map do |project|
       Project.new({
         title: project['title'],
-        id: project['id'].to_i
+        id: project['id'].to_i,
         })
     end
   end
@@ -36,13 +36,12 @@ class Project
     volunteers_list = []
     volunteers_in = DB.exec("SELECT * FROM volunteers WHERE project_id = '#{@id}';")
     volunteers_in.each do |volunteer|
-      volunteers_list.push(
-        Volunteer.new({
-          id: volunteer['id'].to_i,
-          name: volunteer['name'],
-          project_id: volunteer['project_id']
-          })
-        )
+      vol = Volunteer.new({
+        name: volunteer['name'],
+        id: volunteer['id'].to_i,
+        project_id: volunteer[project_id].to_i
+      })
+      volunteers_list.push(vol)
     end
   end
 
