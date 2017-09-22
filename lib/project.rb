@@ -24,11 +24,35 @@ class Project
     end
   end
 
-  def self.find(id)
+  def self.find(id_find)
     Project.all.each do |project|
-      if project.id == id
-        return id
+      if project.id == id_find
+        return project
       end
     end
+  end
+
+  def volunteers
+    volunteers_list = []
+    volunteers_in = DB.exec("SELECT * FROM volunteers WHERE project_id = '#{@id}';")
+    volunteers_in.each do |volunteer|
+      volunteers_list.push(
+        Volunteer.new({
+          id: volunteer['id'].to_i,
+          name: volunteer['name'],
+          project_id: volunteer['project_id']
+          })
+        )
+    end
+  end
+
+  def update(attributes)
+    @title = attributes[:title]
+    DB.exec("UPDATE projects SET title = '#{@title}' WHERE id = '#{@id}';")
+  end
+
+  def delete
+    DB.exec("DELETE FROM projects WHERE id = '#{@id}';")
+    DB.exec("DELETE FROM volunteers WHERE project_id = #{@id};")
   end
 end
