@@ -1,1 +1,15 @@
 <h1>Volunteer Tracker</h1>
+
+<ul>
+  <% @projects.each do |project| %>
+  <li><a href="projects/<%= project.title%>"></a></li>
+  <% end %>
+</ul>
+
+<form action="/" method="post">
+  <div class="form-group">
+    <label for="title">Please enter in the title of the project</label>
+    <input type="text" name="title">
+    <button type="submit">Create Project</button>
+  </div>
+</form>
